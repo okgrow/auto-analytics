@@ -1,10 +1,10 @@
 {
-  "name": "npm-base",
-  "version": "1.0.0",
-  "description": "A base NPM package for writing a NPM package in ES2015",
+  "name": "okgrow-analytics",
+  "version": "0.0.1",
+  "description": "TODO",
   "repository": {
     "type": "git",
-    "url": "https://github.com/kadirahq/npm-base.git"
+    "url": "https://github.com/okgrow/okgrow-analytics.git"
   },
   "license": "MIT",
   "options": {
