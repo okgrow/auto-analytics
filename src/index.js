@@ -4,6 +4,8 @@ import { trackPageWhenReady } from './helpers';
 
 import analytics from '../vendor/analytics.min';
 
+// Doing this because some weird things happen when we just pass settings as an
+// argument to the functions below.
 let SETTINGS = false;
 
 // This is where analytics gets called...
@@ -106,8 +108,10 @@ const bootstrapAnalytics = () => {
 // Make analytics available as an export
 export { analytics }; // eslint-disable-line import/prefer-default-export
 
-export const OKGROWAnalytics = (settings) => {
+export default function (settings) {
+  // Doing this because some weird things happen when we just pass this to
+  // the functions above.
   SETTINGS = settings;
   // Set everything up...
   bootstrapAnalytics();
-};
+}
