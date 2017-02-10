@@ -20,11 +20,9 @@ Use one API, thanks to Segment.io's [analytics.js](https://segment.com/docs/libr
 
 ## Ad-blocker
 
-When running your application in "development mode" any ad-blocking web-browser extensions may block the entire "okgrow-analytics" package. This occurs due to the word "analytics" being used in the package name.
+If you, or your users, are running an ad blocker in their browser and the analytics package is not bundled into a single JavaScript file to the browser (i.e., is downloads as analytics.js or something similar) the browser's ad blocker may prevent analytics tracking. This can happen during development mode when all JavaScript files are typically not bundled together.
 
-FIXME: Please note this only occurs when running Meteor in "development mode" due to the files not being bundled together and minified. To work around this issue you can disable your ad-blocker whilst developing.
-
-FIXME: To test that your application runs whilst an ad-blocker is enabled you can run your Meteor app with the following command:
+To solve this problem with a Meteor application, for example, you can run the application in production mode like this:
 
 `meteor run --production --settings settings.json`
 
@@ -35,24 +33,24 @@ FIXME: To test that your application runs whilst an ad-blocker is enabled you ca
 Add various platforms by adding each tool's configuration to the settings object passed to OKGAnalytics:
 
 ```
-{
-  "public": {
-    "analyticsSettings": {
-      // Add your analytics tracking ids here (remove this line before running)
-      "Google Analytics" : {"trackingId": "Your tracking ID"},
-      "Amplitude"        : {"apiKey": "..."},
-      "Chartbeat"        : {"uid": "..."},
-      "comScore"         : {"c2": "..."},
-      "HubSpot"          : {"portalId": "..."},
-      "Intercom"         : {"appId": "..."},
-      "Keen IO"          : {"projectId": "...", "writeKey": "..."},
-      "KISSmetrics"      : {"apiKey": "..."},
-      "Mixpanel"         : {"token":  "...", "people": true},
-      "Quantcast"        : {"pCode": "..."},
-      "Segment.io"       : {"apiKey": "..."}
-    }
-  }
-}
+import OKGAnalytics, { analytics } from 'okgrow-analytics';
+
+const settings = {
+  // Add your analytics tracking ids here (remove this line before running)
+  "Google Analytics" : {"trackingId": "Your tracking ID"},
+  "Amplitude"        : {"apiKey": "..."},
+  "Chartbeat"        : {"uid": "..."},
+  "comScore"         : {"c2": "..."},
+  "HubSpot"          : {"portalId": "..."},
+  "Intercom"         : {"appId": "..."},
+  "Keen IO"          : {"projectId": "...", "writeKey": "..."},
+  "KISSmetrics"      : {"apiKey": "..."},
+  "Mixpanel"         : {"token":  "...", "people": true},
+  "Quantcast"        : {"pCode": "..."},
+  "Segment.io"       : {"apiKey": "..."}
+};
+
+OKGAnalytics(settings);
 ```
 
 The service names and API key-names provided above are specific to each platform. Make sure to use the correct service name and key shown for the platform you're adding.
@@ -71,18 +69,7 @@ Compatible with any router, this package will log page views automatically. Each
  * `search`: the URL's query string, if provided. blank otherwise
  * `referrer`: hostname + old path, if coming from a previous route
 
-FIXME: To disable automatic page view tracking change `Meteor.settings` as shown below then manually log a page view by calling `analytics.page('page name')`:
-
-```
-{
-  "public": {
-    "analyticsSettings": {
-      // Disable autorun if you do not want analytics running on every route (remove this line before running)
-      "autorun"  : false
-    }
-  }
-}
-```
+To disable automatic page view tracking add ```autorun: false``` to your settings object when configuring then manually log a page view by calling `analytics.page('page name')`:
 
 ### Event tracking
 
@@ -111,9 +98,7 @@ Turn debugging off, in the console:
 
 ### Example React Router Application
 
-This package includes an `examples` directory containing a simple (Meteor) application using react-router. This is just an example with a common router and doesn't imply this plugin only works with this router or only with Meteor.
-
-FIXME: This application can be run from its directory with:
+This package includes an `examples` directory containing a simple (Meteor) application using react-router. This is just an example with a common router and doesn't imply this plugin only works with this router or only with Meteor. This application can be run from its directory with:
 
 `meteor --settings settings.json --production`.
 
