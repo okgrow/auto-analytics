@@ -1,7 +1,7 @@
 {
   "name": "okgrow-analytics",
   "version": "0.0.1",
-  "description": "TODO",
+  "description": "Complete automatic pageview tracking with Google Analytics, Mixpanel, KISSmetrics (and more) integration for JavaScript applications.",
   "repository": {
     "type": "git",
     "url": "https://github.com/okgrow/okgrow-analytics.git"
