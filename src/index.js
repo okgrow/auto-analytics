@@ -4,6 +4,9 @@ import { trackPageWhenReady } from './helpers';
 
 import analytics from '../vendor/analytics.min';
 
+// Make anayltics available globally in the console
+window.analytics = analytics;
+
 // Doing this because some weird things happen when we just pass settings as an
 // argument to the functions below.
 let SETTINGS = false;
@@ -68,8 +71,11 @@ const analyticsStartup = () => {
     // Pass a new object based on settings in case analytics wants or tries to
     // modify the settings object being passed.
     analytics.initialize(Object.assign({}, SETTINGS));
-    logFirstPageLoad();
-    configurePageLoadTracking();
+
+    if (SETTINGS.autorun !== false) {
+      logFirstPageLoad();
+      configurePageLoadTracking();
+    }
   } else {
     console.error('Missing analyticsSettings in Meteor.settings.public'); // eslint-disable-line no-console
   }

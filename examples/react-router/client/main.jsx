@@ -6,12 +6,9 @@ import { Random } from 'meteor/random';
 import { render } from 'react-dom';
 import { Router, Route, browserHistory, Link } from 'react-router';
 
-import OKGAnalytics, { analytics as segmentAnalytics } from 'okgrow-analytics';
+import OKGAnalytics, { analytics } from 'okgrow-analytics';
 
 import './main.html';
-
-// Make anayltics available in the console (is there a smarter way?)
-analytics = segmentAnalytics; // eslint-disable-line no-undef
 
 const SETTINGS = (Meteor.settings
                   && Meteor.settings.public
