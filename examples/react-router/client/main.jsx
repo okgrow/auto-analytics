@@ -10,7 +10,8 @@ import OKGAnalytics, { analytics as segmentAnalytics } from 'okgrow-analytics';
 
 import './main.html';
 
-analytics = segmentAnalytics;  // Make anayltics available in the console (is there a smarter way?)
+// Make anayltics available in the console (is there a smarter way?)
+analytics = segmentAnalytics; // eslint-disable-line no-undef
 
 const SETTINGS = (Meteor.settings
                   && Meteor.settings.public
@@ -27,13 +28,13 @@ export default class App extends Component {
       log: [],
     };
 
-    analytics.on('page', (event, properties, options) => {
+    analytics.on('page', (event, properties, options) => { // eslint-disable-line no-undef
       const log = this.state.log;
       log.push(`Page: ${options.path}`);
       this.setState({ log });
     });
 
-    analytics.on('track', (event, properties, options) => {
+    analytics.on('track', (event, properties, options) => { // eslint-disable-line no-undef, no-unused-vars
       const log = this.state.log;
       log.push(`Track: ${event}`);
       this.setState({ log });
