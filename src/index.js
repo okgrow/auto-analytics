@@ -1,6 +1,6 @@
 /* globals window, location, document */
 
-import { trackPageWhenReady } from './helpers';
+import { trackEventWhenReady, trackPageWhenReady, identifyWhenReady } from './helpers';
 
 import analytics from '../vendor/analytics.min';
 
@@ -113,6 +113,9 @@ const bootstrapAnalytics = () => {
 
 // Make analytics available as an export
 export { analytics }; // eslint-disable-line import/prefer-default-export
+
+// Make our helpers available
+export { trackEventWhenReady, trackPageWhenReady, identifyWhenReady };
 
 export default function (settings) {
   // Doing this because some weird things happen when we just pass this to
