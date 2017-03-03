@@ -61,4 +61,5 @@ describe('okgrow-analytics imports', () => {
   });
 });
 
-// TODO: Let's write more tests...but what exactly?
+// TODO: Create some tests by using the history API: https://developer.mozilla.org/en-US/docs/Web/API/History_API
+//       But how to validate stuff executed? Possibly: https://segment.com/docs/sources/website/analytics.js/#emitter
