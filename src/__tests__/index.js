@@ -18,7 +18,7 @@ const OKGAnalytics = require('../index');
 const should = chai.should();
 
 // Some very basic "smoke test" stuff...
-describe('okgrow-analytics imports', () => {
+describe('okgrow-auto-analytics imports', () => {
   it('analytics is an object', async () => {
     OKGAnalytics.analytics.should.be.a('object');
   });

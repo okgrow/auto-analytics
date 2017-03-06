@@ -1,9 +1,9 @@
-# okgrow-analytics
+# okgrow-auto-analytics
 Use one API, thanks to Segment.io's [analytics.js](https://segment.com/docs/libraries/analytics.js/), to **easily and automatically** record and send data from your JavaScript application to your analytics platforms.
 
 ## Installation
 
-`> npm install okgrow-analytics`
+`> npm install okgrow-auto-analytics`
 
 ## Currently Supported Analytic Services
 * Amplitude
@@ -33,7 +33,7 @@ To solve this problem with a Meteor application, for example, you can run the ap
 Add various platforms by adding each tool's configuration to the settings object passed to OKGAnalytics:
 
 ```
-import OKGAnalytics, { analytics } from 'okgrow-analytics';
+import OKGAnalytics, { analytics } from 'okgrow-auto-analytics';
 
 const settings = {
   // Add your analytics tracking ids here (remove this line before running)
