@@ -1,5 +1,5 @@
 # okgrow-analytics
-Use one API, thanks to Segment.io's [analytics.js](https://segment.com/docs/libraries/analytics.js/), to record and send data from your JavaScript application to your analytics platforms.
+Use one API, thanks to Segment.io's [analytics.js](https://segment.com/docs/libraries/analytics.js/), to **easily and automatically** record and send data from your JavaScript application to your analytics platforms.
 
 ## Installation
 
