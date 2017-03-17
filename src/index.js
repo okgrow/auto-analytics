@@ -52,7 +52,7 @@ const configurePageLoadTracking = () => {
     // Make sure we catch any exception here so that we're sure to call the
     // originalPushState function (below)
     try {
-      logPageLoad({ title: document.title, referrer: location.href });
+      logPageLoad(document.title, location.href);
     } catch (e) {
       console.error(e); // eslint-disable-line no-console
     }
@@ -62,7 +62,7 @@ const configurePageLoadTracking = () => {
   };
 
   window.addEventListener('popstate', () => {
-    logPageLoad({ title: document.title, referrer: location.href });
+    logPageLoad(document.title, location.href);
   }, false);
 };
 

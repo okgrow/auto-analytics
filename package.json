@@ -1,10 +1,10 @@
 {
-  "name": "okgrow-auto-analytics",
-  "version": "1.0.0",
+  "name": "@okgrow/auto-analytics",
+  "version": "1.0.1",
   "description": "Complete automatic pageview tracking with Google Analytics, Mixpanel, KISSmetrics (and more) integration for JavaScript applications.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/okgrow/okgrow-auto-analytics.git"
+    "url": "https://github.com/okgrow/auto-analytics.git"
   },
   "license": "MIT",
   "options": {
