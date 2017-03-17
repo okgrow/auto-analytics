@@ -6,7 +6,7 @@ import { Random } from 'meteor/random';
 import { render } from 'react-dom';
 import { Router, Route, browserHistory, Link } from 'react-router';
 
-import OKGAnalytics, { analytics } from 'okgrow-auto-analytics';
+import OKGAnalytics, { analytics } from '@okgrow/auto-analytics';
 
 import './main.html';
 
@@ -15,7 +15,7 @@ const SETTINGS = (Meteor.settings
                   && Meteor.settings.public.analyticsSettings)
                   || false;
 
-// Initialize the okgrow-auto-analytics package
+// Initialize the @okgrow/auto-analytics package
 OKGAnalytics(SETTINGS);
 
 export default class App extends Component {
