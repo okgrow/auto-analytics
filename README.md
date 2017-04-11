@@ -5,7 +5,7 @@ Use one API, thanks to Segment.io's [analytics.js](https://segment.com/docs/libr
 
 ## Installation
 
-`> npm install @okgrow/auto-analytics`
+`> npm install @okgrow/auto-analytics --save`
 
 ## Currently Supported Analytic Services
 * Amplitude
