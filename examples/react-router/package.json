@@ -12,6 +12,6 @@
     "react-dom": "^15.4.2",
     "react-komposer": "^2.0.0",
     "react-router": "^3.0.2",
-    "@okgrow/auto-analytics": "^1.0.0"
+    "@okgrow/auto-analytics": "^1.0.2"
   }
 }
