@@ -1,6 +1,6 @@
 {
   "name": "@okgrow/auto-analytics",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Complete automatic pageview tracking with Google Analytics, Mixpanel, KISSmetrics (and more) integration for JavaScript applications.",
   "repository": {
     "type": "git",
@@ -41,6 +41,5 @@
     "nodemon": "1.11.x"
   },
   "dependencies": {
-    "babel-runtime": "6.x.x"
   }
 }
