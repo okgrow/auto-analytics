@@ -41,6 +41,5 @@
     "nodemon": "1.11.x"
   },
   "dependencies": {
-    "babel-runtime": "6.x.x"
   }
 }
