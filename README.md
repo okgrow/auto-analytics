@@ -56,7 +56,7 @@ To solve this problem with a Meteor application, for example, you can run the ap
 
 Add various platforms by adding each tool's configuration to the settings object passed to OKGAnalytics:
 
-```
+```js
 import OKGAnalytics, { analytics } from '@okgrow/auto-analytics';
 
 const settings = {
@@ -99,7 +99,7 @@ To disable automatic page view tracking add ```autorun: false``` to your setting
 
 Track any event by simply calling the `analytics.track()` function:
 
-```
+```js
 analytics.track("Bought Ticket", {
   eventName: "Wine Tasting",
   couponValue: 50,
