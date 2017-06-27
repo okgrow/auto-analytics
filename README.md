@@ -1,4 +1,9 @@
-# OK GROW! auto-analytics
+# Auto Analytics
+
+[![npm version](https://badge.fury.io/js/%40okgrow%2Fauto-analytics.svg)](https://badge.fury.io/js/%40okgrow%2Fauto-analytics)
+
+> Complete Google Analytics, Mixpanel, KISSmetrics (and more) integration for JavaScript applications.
+
 Use one API, thanks to Segment.io's [analytics.js](https://segment.com/docs/libraries/analytics.js/), to **easily and automatically** record and send data from your JavaScript application to your analytics platforms.
 
 **NOTE:** The `@okgrow/auto-analytics` package replaces the **now deprecated** `okgrow-auto-analytics` package.
