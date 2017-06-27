@@ -8,11 +8,28 @@ Use one API, thanks to Segment.io's [analytics.js](https://segment.com/docs/libr
 
 **NOTE:** The `@okgrow/auto-analytics` package replaces the **now deprecated** `okgrow-auto-analytics` package.
 
-## Installation
+## Table of Contents
 
-`> npm install @okgrow/auto-analytics --save`
+- [Install](#install)
+- [Currently Supported Analytic Services](#currently-supported-analytic-services)
+- [Ad-blocker](#ad-blocker)
+- [Configuration](#configuration)
+	- [Page views](#page-views)
+	- [Event tracking](#event-tracking)
+  - [Debugging](#debugging)
+  - [Example React Router Application](#example-react-router-application)
+- [Maintainers](#maintainers)
+- [Contributing](#contributing)
+- [License](#license)
+
+## Install
+
+```sh
+npm install @okgrow/auto-analytics --save
+```
 
 ## Currently Supported Analytic Services
+
 * Amplitude
 * Chartbeat
 * comScore
