@@ -1,13 +1,35 @@
-# OK GROW! auto-analytics
+# Auto Analytics
+
+[![npm version](https://badge.fury.io/js/%40okgrow%2Fauto-analytics.svg)](https://badge.fury.io/js/%40okgrow%2Fauto-analytics)
+
+> Complete Google Analytics, Mixpanel, KISSmetrics (and more) integration for JavaScript applications.
+
 Use one API, thanks to Segment.io's [analytics.js](https://segment.com/docs/libraries/analytics.js/), to **easily and automatically** record and send data from your JavaScript application to your analytics platforms.
 
 **NOTE:** The `@okgrow/auto-analytics` package replaces the **now deprecated** `okgrow-auto-analytics` package.
 
-## Installation
+## Table of Contents
 
-`> npm install @okgrow/auto-analytics --save`
+- [Install](#install)
+- [Currently Supported Analytic Services](#currently-supported-analytic-services)
+- [Ad-blocker](#ad-blocker)
+- [Configuration](#configuration)
+	- [Page views](#page-views)
+	- [Event tracking](#event-tracking)
+  - [Debugging](#debugging)
+  - [Example React Router Application](#example-react-router-application)
+- [Maintainers](#maintainers)
+- [Contributing](#contributing)
+- [License](#license)
+
+## Install
+
+```sh
+npm install @okgrow/auto-analytics --save
+```
 
 ## Currently Supported Analytic Services
+
 * Amplitude
 * Chartbeat
 * comScore
@@ -34,7 +56,7 @@ To solve this problem with a Meteor application, for example, you can run the ap
 
 Add various platforms by adding each tool's configuration to the settings object passed to OKGAnalytics:
 
-```
+```js
 import OKGAnalytics, { analytics } from '@okgrow/auto-analytics';
 
 const settings = {
@@ -77,7 +99,7 @@ To disable automatic page view tracking add ```autorun: false``` to your setting
 
 Track any event by simply calling the `analytics.track()` function:
 
-```
+```js
 analytics.track("Bought Ticket", {
   eventName: "Wine Tasting",
   couponValue: 50,
@@ -104,10 +126,24 @@ This package includes an `examples` directory containing a simple (Meteor) appli
 
 `meteor --settings settings.json --production`.
 
-### License
+## Maintainers
 
-Released under the [MIT license](https://github.com/okgrow/analytics/blob/master/License.md).
+This is an open source package. We hope to deal with contributions in a timely manner, but that's not always the case. The main maintainers are:
 
-### Contributing
+[@okgrow](https://github.com/okgrow)
 
-Issues and Pull Requests are always welcome. Please read our [contribution guidelines](https://github.com/okgrow/guides/blob/master/contributing.md).
+Feel free to ping if there are open issues or pull requests which are taking a while to be dealt with!
+
+## Contributing
+
+Issues and Pull Requests are always welcome.
+
+Please read our [contribution guidelines](https://github.com/okgrow/guides/blob/master/open-source/contributing.md).
+
+If you are interested in becoming a maintainer, get in touch with us by sending an email or opening an issue. You should already have code merged into the project. Active contributors are encouraged to get in touch.
+
+Please note that all interactions in @okgrow's repos should follow our [Code of Conduct](https://github.com/okgrow/guides/blob/master/open-source/CODE_OF_CONDUCT.md).
+
+## License
+
+Released under the [MIT license](https://github.com/okgrow/analytics/blob/master/License.md) © 2017 OK GROW!.
