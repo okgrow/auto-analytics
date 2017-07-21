@@ -2,9 +2,10 @@
 
 import { trackEventWhenReady, trackPageWhenReady, identifyWhenReady } from './helpers';
 
-import analytics from '../vendor/analytics.min';
+// REMOVE: import analytics from '../vendor/analytics.min';
+import analytics from './analyticsLoader';
 
-// Make anayltics available globally in the console
+// Make analytics available globally in the console
 window.analytics = analytics;
 
 // Doing this because some weird things happen when we just pass settings as an

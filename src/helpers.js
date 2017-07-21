@@ -1,4 +1,5 @@
-import analytics from '../vendor/analytics.min';
+// REMOVE: import analytics from '../vendor/analytics.min';
+import analytics from './analyticsLoader';
 
 //
 // analytics.js may not have loaded it's integrations by the time we start
