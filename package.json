@@ -1,7 +1,7 @@
 {
   "name": "@okgrow/auto-analytics",
   "version": "2.0.0",
-  "description": "Complete automatic pageview tracking with Google Analytics, Mixpanel, KISSmetrics (and more) integration for JavaScript applications.",
+  "description": "Automatic pageview tracking wrapper for Segment's analytics.js package.",
   "repository": {
     "type": "git",
     "url": "https://github.com/okgrow/auto-analytics.git"
