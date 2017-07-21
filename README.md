@@ -50,8 +50,9 @@ However, you may want to install only the integrations you need. You can find th
 
 This package will check for, in order:
 
+1. `window.analytics`
 1. `analytics.js`
-2. `@segment/analytics.js-integration`
+1. `@segment/analytics.js-integration`
 
 ## Ad-blocker
 
