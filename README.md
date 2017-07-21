@@ -25,31 +25,33 @@ Use one API, thanks to Segment.io's [analytics.js](https://segment.com/docs/libr
 ## Background
 
 ### Auto Analytics 2.0+
-TODO
+With version 2.X we are **removing the embedded Segment `analytics.js` module**. With version 2.0.0 and beyond you will need to install Segment's `analytics.js` module _**manually**_.
+
+**NOTE:** _We have **not** added the package Segment `analytics.js` as an explicit dependency_ because some developers will prefer to add only individual integrations or create a customized `analytics.js` module in order to keep the weight of the package to a minimum.
 
 ### Auto Analytics 1.0+
-TODO
+With the first version of this package we basically extracted code from our more Meteor-specific Atmosphere package to create a more generally usable package for the whole JavaScript community.
 
 
 ## Install
 
 ```sh
-npm install @okgrow/auto-analytics --save
+npm install --save @okgrow/auto-analytics
 ```
 
-## Currently Supported Analytic Services
+## Adding Segment's `analytics.js` Package
+Segment's `analytics.js` package offers a large number of integrations with various analytics providers. Installing the main package will give you all of them:
 
-* Amplitude
-* Chartbeat
-* comScore
-* Google Analytics
-* HubSpot
-* Intercom
-* Keen IO
-* KISSmetrics
-* Mixpanel
-* Quantcast
-* Segment.io
+```sh
+npm install --save analytics.js
+```
+
+However, you may want to install only the integrations you need. You can find these [here](https://github.com/segment-integrations).
+
+This package will check for, in order:
+
+1. `analytics.js`
+2. `@segment/analytics.js-integration`
 
 ## Ad-blocker
 
