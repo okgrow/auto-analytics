@@ -22,6 +22,15 @@ Use one API, thanks to Segment.io's [analytics.js](https://segment.com/docs/libr
 - [Contributing](#contributing)
 - [License](#license)
 
+## Background
+
+### Auto Analytics 2.0+
+TODO
+
+### Auto Analytics 1.0+
+TODO
+
+
 ## Install
 
 ```sh
