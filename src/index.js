@@ -1,12 +1,26 @@
 /* globals window, location, document */
 
-import { trackEventWhenReady, trackPageWhenReady, identifyWhenReady } from './helpers';
 
-// REMOVE: import analytics from '../vendor/analytics.min';
-import analytics from './analyticsLoader';
+// helpers
 
-// Make analytics available globally in the console
-window.analytics = analytics;
+//
+// analytics.js may not have loaded it's integrations by the time we start
+// tracking events, page views and identifies. So we can use these *WhenReady()
+// functions to defer the action until all the intgrations are ready.
+//
+// TODO: Consider whether to export something like this, maybe provide our own
+//       API instead of just using analytics.js API.
+//
+
+const trackEventWhenReady = (...args) =>
+  window.analytics.ready(() => window.analytics.track.apply(this, args));
+
+const trackPageWhenReady = (...args) =>
+  window.analytics.ready(() => window.analytics.page.apply(this, args));
+
+const identifyWhenReady = (...args) =>
+  window.analytics.ready(() => window.analytics.identify.apply(this, args));
+
 
 // Doing this because some weird things happen when we just pass settings as an
 // argument to the functions below.
@@ -71,7 +85,7 @@ const analyticsStartup = () => {
   if (SETTINGS) {
     // Pass a new object based on settings in case analytics wants or tries to
     // modify the settings object being passed.
-    analytics.initialize(Object.assign({}, SETTINGS));
+    window.analytics.initialize(Object.assign({}, SETTINGS));
 
     if (SETTINGS.autorun !== false) {
       logFirstPageLoad();
@@ -112,16 +126,18 @@ const bootstrapAnalytics = () => {
   }
 };
 
-// Make analytics available as an export
-export { analytics }; // eslint-disable-line import/prefer-default-export
 
 // Make our helpers available
 export { trackEventWhenReady, trackPageWhenReady, identifyWhenReady };
 
-export default function (settings) {
+export default function (analytics, settings) {
+  // Make analytics available globally in the console
+  window.analytics = analytics;
+
   // Doing this because some weird things happen when we just pass this to
   // the functions above.
   SETTINGS = settings;
+
   // Set everything up...
   bootstrapAnalytics();
 }

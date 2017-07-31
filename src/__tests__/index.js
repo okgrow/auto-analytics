@@ -12,16 +12,23 @@ global.location = mock.getLocation();
 global.navigator = mock.getNavigator();
 global.history = mock.getHistory();
 
+
 // Now that's all setup, pull in the package...
 const OKGAnalytics = require('../index');
+const analytics = require('analytics.js');
+
+const settings = {
+  'Google Analytics': { 'trackingId': 'UA-58359748-3' }, // eslint-disable-line quote-props
+  'Mixpanel': { 'token': 'b513b13a2e253576934b47d2a195ae29', 'people': true }, // eslint-disable-line quote-props
+};
+
+OKGAnalytics.default(analytics, settings);
+
 
 const should = chai.should();
 
 // Some very basic "smoke test" stuff...
 describe('okgrow-auto-analytics imports', () => {
-  it('analytics is an object', async () => {
-    OKGAnalytics.analytics.should.be.a('object');
-  });
   it('trackEventWhenReady is a function', async () => {
     OKGAnalytics.trackEventWhenReady.should.be.a('function');
   });
@@ -46,15 +53,8 @@ describe('okgrow-auto-analytics imports', () => {
   });
 
   it('window.onload is function', async () => {
-    const settings = {
-      'Google Analytics': { 'trackingId': 'UA-58359748-3' }, // eslint-disable-line quote-props
-      'Mixpanel': { 'token': 'b513b13a2e253576934b47d2a195ae29', 'people': true }, // eslint-disable-line quote-props
-    };
-
     // eslint-disable-next-line no-undef
     should.not.exist(window.onload);
-
-    OKGAnalytics.default(settings);
 
     // eslint-disable-next-line no-undef
     window.onload.should.be.a('function');

@@ -12,7 +12,14 @@
   },
   "bugs": "https://github.com/okgrow/auto-analytics/issues",
   "homepage": "https://github.com/okgrow/auto-analytics",
-  "keywords": ["javascript", "analytics", "google-analytics", "segment", "kissmetrics", "mixpanel"],
+  "keywords": [
+    "javascript",
+    "analytics",
+    "google-analytics",
+    "segment",
+    "kissmetrics",
+    "mixpanel"
+  ],
   "scripts": {
     "prepublish": ". ./scripts/prepublish.sh",
     "lint": "eslint ./src",
@@ -23,6 +30,7 @@
     "start": "babel src -d dist --watch"
   },
   "devDependencies": {
+    "analytics.js": "^2.9.1",
     "babel-cli": "6.x.x",
     "babel-core": "6.x.x",
     "babel-eslint": "7.x.x",
@@ -43,6 +51,5 @@
     "mock-browser": "^0.92.12",
     "nodemon": "1.11.x"
   },
-  "dependencies": {
-  }
+  "dependencies": {}
 }
