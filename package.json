@@ -30,7 +30,6 @@
     "start": "babel src -d dist --watch"
   },
   "devDependencies": {
-    "analytics.js": "^2.9.1",
     "babel-cli": "6.x.x",
     "babel-core": "6.x.x",
     "babel-eslint": "7.x.x",

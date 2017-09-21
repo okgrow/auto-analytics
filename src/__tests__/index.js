@@ -15,7 +15,7 @@ global.history = mock.getHistory();
 
 // Now that's all setup, pull in the package...
 const OKGAnalytics = require('../index');
-const analytics = require('analytics.js');
+const analytics = require('../../examples/react-router/imports/analytics.min');
 
 const settings = {
   'Google Analytics': { 'trackingId': 'UA-58359748-3' }, // eslint-disable-line quote-props
