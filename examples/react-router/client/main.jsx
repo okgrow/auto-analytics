@@ -6,17 +6,21 @@ import { Random } from 'meteor/random';
 import { render } from 'react-dom';
 import { Router, Route, browserHistory, Link } from 'react-router';
 
-import OKGAnalytics, { analytics } from '@okgrow/auto-analytics';
+import OKGAnalytics from '@okgrow/auto-analytics';
 
 import './main.html';
+// NOTE: import your own custom built segment analytics.js like below.
+// You can find out how to build your analytics.js here https://github.com/okgrow/analytics.js
+// In this example our analytics.js is bundled with only Google Analytics & Mixpanel
+import analytics from '../imports/analytics.min';
 
-const SETTINGS = (Meteor.settings
+const settings = (Meteor.settings
                   && Meteor.settings.public
                   && Meteor.settings.public.analyticsSettings)
                   || false;
 
-// Initialize the @okgrow/auto-analytics package
-OKGAnalytics(SETTINGS);
+// NOTE: Initialize the @okgrow/auto-analytics package.
+OKGAnalytics({ analytics, settings });
 
 export default class App extends Component {
   constructor() {
