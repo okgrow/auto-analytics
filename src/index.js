@@ -130,7 +130,12 @@ const bootstrapAnalytics = () => {
 // Make our helpers available
 export { trackEventWhenReady, trackPageWhenReady, identifyWhenReady };
 
-export default function (analytics, settings) {
+export default function ({ analytics, settings }) {
+  // TODO: Improve detection of incorrect params & provide warnings.
+  if (typeof analytics !== 'object' || typeof settings !== 'object') {
+    console.error('Analytics is not logging! You must initialize your analytics correctly.');
+    return;
+  }
   // Make analytics available globally in the console
   window.analytics = analytics;
 
