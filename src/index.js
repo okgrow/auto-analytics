@@ -92,7 +92,7 @@ const analyticsStartup = () => {
       configurePageLoadTracking();
     }
   } else {
-    console.error('Missing analyticsSettings in Meteor.settings.public'); // eslint-disable-line no-console
+    console.error('analyticsStartup has failed! Your analytic settings are missing!'); // eslint-disable-line no-console
   }
 };
 
@@ -126,16 +126,35 @@ const bootstrapAnalytics = () => {
   }
 };
 
+// returns a string containing the missing functions.
+const checkForMissingFunctions = (analytics) => {
+  const functionsToCheck = ['ready', 'track', 'page', 'identify'];
+  const missingFunctions = functionsToCheck.reduce((accum, funcToCheck, i) => {
+    if (typeof analytics[funcToCheck] !== 'function') {
+      return `${accum}${i ? ', ' : ''}${funcToCheck}()`;
+    }
+    return accum;
+  }, '');
+  return missingFunctions;
+};
 
 // Make our helpers available
 export { trackEventWhenReady, trackPageWhenReady, identifyWhenReady };
 
 export default function ({ analytics, settings }) {
-  // TODO: Improve detection of incorrect params & provide warnings.
+  // Ensure we have been supplied the correct params
   if (typeof analytics !== 'object' || typeof settings !== 'object') {
-    console.error('Analytics is not logging! You must initialize your analytics correctly.');
+    console.error('Analytics is not logging! You must initialize analytics with the correct params.');
     return;
   }
+
+  // Ensure we are not missing the core functions we depend on.
+  const missingFunctions = checkForMissingFunctions(analytics);
+  if (missingFunctions.length) {
+    console.error(`Analytics is not logging! Expected analytics to contain ${missingFunctions} function(s).`);
+    return;
+  }
+
   // Make analytics available globally in the console
   window.analytics = analytics;
 
