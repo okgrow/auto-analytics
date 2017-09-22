@@ -18,12 +18,18 @@ const OKGAnalytics = require('../index');
 const analytics = require('../../examples/react-router/imports/analytics.min');
 
 const settings = {
-  'Google Analytics': { 'trackingId': 'UA-58359748-3' }, // eslint-disable-line quote-props
-  'Mixpanel': { 'token': 'b513b13a2e253576934b47d2a195ae29', 'people': true }, // eslint-disable-line quote-props
+  analytics,
+  integrations: {
+    'Google Analytics': { 'trackingId': 'UA-58359748-3' }, // eslint-disable-line quote-props
+    'Mixpanel': { 'token': 'b513b13a2e253576934b47d2a195ae29', 'people': true }, // eslint-disable-line quote-props
+  },
+  options: {
+    // Segment options for initialize() from analytics.js-core
+  },
+  autorun: true,
 };
 
-OKGAnalytics.default(analytics, settings);
-
+OKGAnalytics.default(settings);
 
 const should = chai.should();
 
