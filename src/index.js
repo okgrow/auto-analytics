@@ -22,10 +22,6 @@ const identifyWhenReady = (...args) =>
   window.analytics.ready(() => window.analytics.identify.apply(this, args));
 
 
-// Doing this because some weird things happen when we just pass settings as an
-// argument to the functions below.
-let SETTINGS = false;
-
 // This is where analytics gets called...
 const logPageLoad = (title, referrer) => {
   // Use setTimeout so it uses the location from after the route change
@@ -81,18 +77,21 @@ const configurePageLoadTracking = () => {
   }, false);
 };
 
-const analyticsStartup = () => {
-  if (SETTINGS) {
-    // Pass a new object based on settings in case analytics wants or tries to
-    // modify the settings object being passed.
-    window.analytics.initialize(Object.assign({}, SETTINGS));
+const isEmptyObject = item =>
+  typeof item === 'object' && !Object.keys(item).length;
 
-    if (SETTINGS.autorun !== false) {
+const analyticsStartup = ({ integrations, options = {}, autorun = true }) => {
+  if (!isEmptyObject(integrations)) {
+    // You can review the function's signature & behaviour with the below link.
+    // https://github.com/segmentio/analytics.js-core/blob/master/lib/analytics.js#L93-L105
+    window.analytics.initialize(integrations, options);
+
+    if (autorun !== false) {
       logFirstPageLoad();
       configurePageLoadTracking();
     }
   } else {
-    console.error('analyticsStartup has failed! Your analytic settings are missing!'); // eslint-disable-line no-console
+    console.error('analyticsStartup has failed! Your analytic integrations are missing!'); // eslint-disable-line no-console
   }
 };
 
@@ -113,55 +112,60 @@ const analyticsStartup = () => {
 // a developer can call to manually set this all up.
 //
 
-const bootstrapAnalytics = () => {
+const bootstrapAnalytics = (settings) => {
   const originalWindowOnLoad = window.onload;
 
   if (typeof originalWindowOnLoad === 'function') {
     window.onload = function okgrowAnalyticsMonkeyPatchedOnLoad(...args) {
-      analyticsStartup(SETTINGS);
+      analyticsStartup(settings);
       originalWindowOnLoad.apply(this, args);
     };
   } else {
-    window.onload = analyticsStartup;
+    window.onload = () => analyticsStartup(settings);
   }
 };
 
-// returns a string containing the missing functions.
-const checkForMissingFunctions = (analytics) => {
-  const functionsToCheck = ['ready', 'track', 'page', 'identify'];
+// returns a string containing any missing functions.
+const checkForMissingFunctions = (object = {}, functionsToCheck) => {
   const missingFunctions = functionsToCheck.reduce((accum, funcToCheck, i) => {
-    if (typeof analytics[funcToCheck] !== 'function') {
-      return `${accum}${i ? ', ' : ''}${funcToCheck}()`;
+    if (typeof object[funcToCheck] !== 'function') {
+      return `${accum}${funcToCheck} ,`;
     }
     return accum;
   }, '');
   return missingFunctions;
 };
 
+
 // Make our helpers available
 export { trackEventWhenReady, trackPageWhenReady, identifyWhenReady };
 
-export default function ({ analytics, settings }) {
-  // Ensure we have been supplied the correct params
-  if (typeof analytics !== 'object' || typeof settings !== 'object') {
+export default function ({ analytics, integrations, options = {}, autorun = true }) {
+  // Ensure we have been supplied at least the analytics & segment integration objects.
+  if (typeof analytics !== 'object' || typeof integrations !== 'object') {
     console.error('Analytics is not logging! You must initialize analytics with the correct params.');
     return;
   }
 
   // Ensure we are not missing the core functions we depend on.
-  const missingFunctions = checkForMissingFunctions(analytics);
-  if (missingFunctions.length) {
-    console.error(`Analytics is not logging! Expected analytics to contain ${missingFunctions} function(s).`);
+  const expectedAnalyticsFuncs = ['ready', 'track', 'page', 'identify'];
+  const missingAnalyticsFuncs = checkForMissingFunctions(analytics, expectedAnalyticsFuncs);
+  if (missingAnalyticsFuncs.length) {
+    console.error(`Analytics is not logging! Expected analytics to contain ${missingAnalyticsFuncs} function(s).`);
     return;
+  }
+
+  // Alert the user to any Integrations they have setup in their settings,
+  // but are missing from the analytics.min.js bundle they have passed to us.
+  const missingIntegrations = checkForMissingFunctions(analytics.Integrations, Object.keys(integrations));
+  if (missingIntegrations.length) {
+    console.warn(`Your analytics is missing the integrations you specified in your settings@ Expected analytics to contain ${missingIntegrations} integration(s).`);
+    console.warn('The missing integration(s) will not work without being included in your analytics.js.');
   }
 
   // Make analytics available globally in the console
   window.analytics = analytics;
 
-  // Doing this because some weird things happen when we just pass this to
-  // the functions above.
-  SETTINGS = settings;
-
   // Set everything up...
-  bootstrapAnalytics();
+  bootstrapAnalytics({ integrations, options, autorun });
 }
