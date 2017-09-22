@@ -46,11 +46,18 @@ import analytics from './your-custom-build/analytics.min.js';
 
 // Add your analytics integrations and their tracking ids + config options here.
 const settings = {
-  "Google Analytics" : {"trackingId": "Your tracking ID"},
-  "Mixpanel"         : {"token":  "...", "people": true},
+  analytics,
+  integrations: {
+    'Google Analytics': { 'trackingId': 'Your tracking ID' },
+    'Mixpanel': { 'token': '...', 'people': true },
+  },
+  options: {
+    // Segment options to be passed to initialize() from analytics.js-core
+  },
+  autorun: true, // Defaults to true if not provided.
 };
 
-OKGAnalytics({ analytics, settings });
+OKGAnalytics(settings);
 ```
 
 ## Creating Segment's analytics.js
@@ -80,7 +87,7 @@ However it is recommend that you build your own `analytics.js` with only the int
 
 ## Settings Configuration
 
-The service names and API key-names provided in the Settings are specific to each platform. Make sure to use the correct service name and key shown for the platform you're adding.
+The service names and API key-names provided in the `integrations` section are specific to each platform. Make sure to use the correct service name and key shown for the platform you're adding.
 
 There are other options which are not documented in the example above. To find them search for your specific integration [in this file](https://github.com/okgrow/analytics.js/blob/master/analytics.js) and look at the options and their defaults that are set with `.option(...)`.
 
