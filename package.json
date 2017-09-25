@@ -18,7 +18,7 @@
     "mixpanel"
   ],
   "scripts": {
-    "prepublish": ". ./scripts/prepublish.sh",
+    "prepare": ". ./scripts/prepublish.sh",
     "lint": "eslint ./src",
     "lintfix": "eslint ./src --fix",
     "testonly": "jest",
