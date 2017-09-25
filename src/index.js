@@ -1,4 +1,4 @@
-/* globals window, location, document */
+/* globals window, document */
 
 // analytics.js may not have loaded it's integrations by the time we start
 // tracking events, page views and identifies. So we can use these *WhenReady()
@@ -22,9 +22,9 @@ const logPageLoad = (title, referrer) => {
     const page = {
       title,
       referrer,
-      path: location.pathname,
-      search: location.search,
-      url: location.href,
+      path: window.location.pathname,
+      search: window.location.search,
+      url: window.location.href,
     };
 
     // Track page on analytics
@@ -53,7 +53,7 @@ const configurePageLoadTracking = () => {
     // Make sure we catch any exception here so that we're sure to call the
     // originalPushState function (below)
     try {
-      logPageLoad(document.title, location.href);
+      logPageLoad(document.title, window.location.href);
     } catch (e) {
       console.error(e); // eslint-disable-line no-console
     }
@@ -63,7 +63,7 @@ const configurePageLoadTracking = () => {
   };
 
   window.addEventListener('popstate', () => {
-    logPageLoad(document.title, location.href);
+    logPageLoad(document.title, window.location.href);
   }, false);
 };
 
@@ -127,7 +127,12 @@ const checkForMissingFunctions = (object = {}, functionsToCheck) => {
 // Make our helpers available
 export { trackEventWhenReady, trackPageWhenReady, identifyWhenReady };
 
-export default function ({ analytics, integrations, options = {}, autorun = true } = {}) {
+export default function ({
+  analytics,
+  integrations,
+  options = {},
+  autorun = true,
+} = {}) {
   // Ensure we have been supplied at least the analytics & segment integration objects.
   if (typeof analytics !== 'object' || typeof integrations !== 'object') {
     throw new Error('Analytics is not logging! You must initialize analytics with the correct params.');
