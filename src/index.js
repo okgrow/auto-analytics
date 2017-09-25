@@ -140,19 +140,17 @@ const checkForMissingFunctions = (object = {}, functionsToCheck) => {
 // Make our helpers available
 export { trackEventWhenReady, trackPageWhenReady, identifyWhenReady };
 
-export default function ({ analytics, integrations, options = {}, autorun = true }) {
+export default function ({ analytics, integrations, options = {}, autorun = true } = {}) {
   // Ensure we have been supplied at least the analytics & segment integration objects.
   if (typeof analytics !== 'object' || typeof integrations !== 'object') {
-    console.error('Analytics is not logging! You must initialize analytics with the correct params.');
-    return;
+    throw new Error('Analytics is not logging! You must initialize analytics with the correct params.');
   }
 
   // Ensure we are not missing the core functions we depend on.
   const expectedAnalyticsFuncs = ['ready', 'track', 'page', 'identify'];
   const missingAnalyticsFuncs = checkForMissingFunctions(analytics, expectedAnalyticsFuncs);
   if (missingAnalyticsFuncs.length) {
-    console.error(`Analytics is not logging! Expected analytics to contain ${missingAnalyticsFuncs} function(s).`);
-    return;
+    throw new Error(`Analytics is not logging! Expected analytics to contain ${missingAnalyticsFuncs} function(s).`);
   }
 
   // Alert the user to any Integrations they have setup in their settings,
