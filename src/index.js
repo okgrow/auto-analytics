@@ -1,17 +1,10 @@
 /* globals window, location, document */
 
-
-// helpers
-
-//
 // analytics.js may not have loaded it's integrations by the time we start
 // tracking events, page views and identifies. So we can use these *WhenReady()
 // functions to defer the action until all the intgrations are ready.
-//
 // TODO: Consider whether to export something like this, maybe provide our own
 //       API instead of just using analytics.js API.
-//
-
 const trackEventWhenReady = (...args) =>
   window.analytics.ready(() => window.analytics.track.apply(this, args));
 
@@ -45,14 +38,11 @@ const logFirstPageLoad = () => {
 };
 
 
-//
 // What we're doing here is Monkey Patching(tm) the window.history.pushState()
 // function because, currently, the History API provides the 'popstate' event
 // but this event only gets fired when history.back(), history.go() are called
 // or the user uses the browser buttons, but NOT when history.pushState() is
 // called.
-//
-
 const configurePageLoadTracking = () => {
   // Save reference to original pushState.
   const originalPushState = window.history.pushState;
@@ -96,7 +86,6 @@ const analyticsStartup = ({ integrations, options = {}, autorun = true }) => {
 };
 
 
-//
 // What we're doing here is hooking into the window.onload event to:
 //
 // a) log the first page load, and
@@ -110,8 +99,6 @@ const analyticsStartup = ({ integrations, options = {}, autorun = true }) => {
 //
 // Possible solution is that we make analyticsStartup() (above) a public API
 // a developer can call to manually set this all up.
-//
-
 const bootstrapAnalytics = (settings) => {
   const originalWindowOnLoad = window.onload;
 
@@ -127,7 +114,7 @@ const bootstrapAnalytics = (settings) => {
 
 // returns a string containing any missing functions.
 const checkForMissingFunctions = (object = {}, functionsToCheck) => {
-  const missingFunctions = functionsToCheck.reduce((accum, funcToCheck, i) => {
+  const missingFunctions = functionsToCheck.reduce((accum, funcToCheck) => {
     if (typeof object[funcToCheck] !== 'function') {
       return `${accum}${funcToCheck} ,`;
     }
