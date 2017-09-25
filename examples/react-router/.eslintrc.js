@@ -1,5 +1,5 @@
-
-{
+module.exports = {
+  "root": true,
   "extends": "airbnb",
   "rules": {
     "no-extra-parens": 0, // Interferes with jsx

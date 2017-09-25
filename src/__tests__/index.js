@@ -4,7 +4,7 @@ import analytics from '../../examples/react-router/imports/analytics.min';
 import OKGAnalytics, { trackPageWhenReady, trackEventWhenReady, identifyWhenReady } from '../index';
 
 // Params to pass to initialize OKGAnalytics
-const validSettings = {
+const validSettings = { // eslint-disable-line
   analytics,
   integrations: {
     'Google Analytics': { 'trackingId': 'UA-58359748-3' }, // eslint-disable-line quote-props
