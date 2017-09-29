@@ -20,16 +20,20 @@ const validSettings = { // eslint-disable-line
 describe('@okgrow/auto-analytics correctly exposes', () => {
   test('trackEventWhenReady is a function', () => {
     expect(trackEventWhenReady).toBeDefined();
+    expect(typeof trackEventWhenReady).toBe('function');
   });
   test('trackPageWhenReady is a function', () => {
     expect(trackPageWhenReady).toBeDefined();
+    expect(typeof trackPageWhenReady).toBe('function');
   });
   test('identifyWhenReady is a function', () => {
     expect(identifyWhenReady).toBeDefined();
+    expect(typeof identifyWhenReady).toBe('function');
   });
 
-  test('default export is a function', () => {
+  test('initAnalytics is a function', () => {
     expect(initAnalytics).toBeDefined();
+    expect(typeof initAnalytics).toBe('function');
   });
 });
 
