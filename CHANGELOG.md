@@ -7,7 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Changed
 - Stop bundling `analytics.min.js` with our package.
-- Default function now accepts a single object containing the `analytics.js` & `settings` object. e.g - `OKGAnalytics({ analytics, settings })`.
+- Default function is no longer exported. Replaced with `initAnalytics()`.
+- `initAnalytics()` now accepts a single object containing `analytics.js`, segment's `integrations` & `options`, and `autorun`. e.g - `OKGAnalytics({ analytics, integrations, options, autorun })`.
 - Example updated with only the `Google Analytics` and `Mixpanel` integrations bundled in `analytics.min.js`.
 
 ## [1.0.1] - 2017-03-17

@@ -1,9 +1,9 @@
 /* globals jest describe test expect */
 
 import analytics from '../../examples/react-router/imports/analytics.min';
-import OKGAnalytics, { trackPageWhenReady, trackEventWhenReady, identifyWhenReady } from '../index';
+import { initAnalytics, trackPageWhenReady, trackEventWhenReady, identifyWhenReady } from '../index';
 
-// Params to pass to initialize OKGAnalytics
+// Params to pass to initialize initAnalytics
 const validSettings = { // eslint-disable-line
   analytics,
   integrations: {
@@ -29,12 +29,12 @@ describe('@okgrow/auto-analytics correctly exposes', () => {
   });
 
   test('default export is a function', () => {
-    expect(OKGAnalytics).toBeDefined();
+    expect(initAnalytics).toBeDefined();
   });
 });
 
 // Testing our error reporting on startup
-describe('OKGAnalytics() Throws Errors on corrupt params', () => {
+describe('initAnalytics() Throws Errors on corrupt params', () => {
   // Mock functions that are expected to exist on the analytics object.
   const page = jest.fn();
   const ready = jest.fn();
@@ -44,42 +44,42 @@ describe('OKGAnalytics() Throws Errors on corrupt params', () => {
   // NOTE: Only unhandled edge case is if a user is to pass null.
   // As a TypeError will be thrown due to destructuring.
   test('Throws error when no params passed', () => {
-    const init = () => OKGAnalytics();
+    const init = () => initAnalytics();
     expect(init).toThrowError('Analytics is not logging! You must initialize analytics with the correct params.');
   });
 
   test('Throws when analytics is missing', () => {
-    const init = () => OKGAnalytics({});
+    const init = () => initAnalytics({});
     expect(init).toThrowError('Analytics is not logging! You must initialize analytics with the correct params.');
   });
 
   test('Throws when integrations is missing', () => {
-    const init = () => OKGAnalytics({ analytics });
+    const init = () => initAnalytics({ analytics });
     expect(init).toThrowError('Analytics is not logging! You must initialize analytics with the correct params.');
   });
 
   test('Throws when analytics is missing all core functions', () => {
-    const missingAll = () => OKGAnalytics({ analytics: {}, integrations: {} });
+    const missingAll = () => initAnalytics({ analytics: {}, integrations: {} });
     expect(missingAll).toThrowError('Analytics is not logging! Expected analytics to contain ready ,track ,page ,identify , function(s).');
   });
 
   test('Throws when analytics is missing ready()', () => {
-    const missingReady = () => OKGAnalytics({ analytics: { track, page, identify }, integrations: {} });
+    const missingReady = () => initAnalytics({ analytics: { track, page, identify }, integrations: {} });
     expect(missingReady).toThrowError('Analytics is not logging! Expected analytics to contain ready , function(s).');
   });
 
   test('Throws when analytics is missing track()', () => {
-    const missingTrack = () => OKGAnalytics({ analytics: { ready, page, identify }, integrations: {} });
+    const missingTrack = () => initAnalytics({ analytics: { ready, page, identify }, integrations: {} });
     expect(missingTrack).toThrowError('Analytics is not logging! Expected analytics to contain track , function(s).');
   });
 
   test('Throws when analytics is missing page()', () => {
-    const missingPage = () => OKGAnalytics({ analytics: { ready, track, identify }, integrations: {} });
+    const missingPage = () => initAnalytics({ analytics: { ready, track, identify }, integrations: {} });
     expect(missingPage).toThrowError('Analytics is not logging! Expected analytics to contain page , function(s).');
   });
 
   test('Throws when analytics is missing identify()', () => {
-    const missingIdentify = () => OKGAnalytics({ analytics: { ready, track, page }, integrations: {} });
+    const missingIdentify = () => initAnalytics({ analytics: { ready, track, page }, integrations: {} });
     expect(missingIdentify).toThrowError('Analytics is not logging! Expected analytics to contain identify , function(s).');
   });
 });

@@ -40,7 +40,7 @@ npm install --save @okgrow/auto-analytics
 ```
 
 ```js
-import OKGAnalytics from '@okgrow/auto-analytics';
+import { initAnalytics } from '@okgrow/auto-analytics';
 // NOTE: You must build your own analytics.js, see Creating Segment's analytics.js for details.
 import analytics from './your-custom-build/analytics.min.js';
 
@@ -57,7 +57,7 @@ const settings = {
   autorun: true, // Defaults to true if not provided.
 };
 
-OKGAnalytics(settings);
+initAnalytics(settings);
 ```
 
 ## Creating Segment's analytics.js

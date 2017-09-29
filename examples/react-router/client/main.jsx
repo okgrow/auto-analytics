@@ -6,7 +6,7 @@ import { Random } from 'meteor/random';
 import { render } from 'react-dom';
 import { Router, Route, browserHistory, Link } from 'react-router';
 
-import OKGAnalytics from '@okgrow/auto-analytics';
+import { initAnalytics } from '@okgrow/auto-analytics';
 
 import './main.html';
 // NOTE: import your own custom built segment analytics.js like below.
@@ -20,7 +20,7 @@ const integrations = (Meteor.settings
                   || false;
 
 // NOTE: Initialize the @okgrow/auto-analytics package.
-OKGAnalytics({ analytics, integrations, options: {}, autorun: true });
+initAnalytics({ analytics, integrations, options: {}, autorun: true });
 
 const exampleTrackEvent = () => analytics.track('Bought a Ticket', {
   eventName: 'Wine Tasting',
