@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Default function is no longer exported. Replaced with `initAnalytics()`.
 - `initAnalytics()` now accepts a single object containing `analytics.js`, segment's `integrations` & `options`, and `autorun`. e.g - `OKGAnalytics({ analytics, integrations, options, autorun })`.
 - Example updated with only the `Google Analytics` and `Mixpanel` integrations bundled in `analytics.min.js`.
+- Rollup.js is now used for bundling the auto-analytics package instead of a custom babel script.
+- .babelrc now has a `build` & `test` config.
+- `.npmignore` has been removed and `files: ['dist']` has been added to `package.json` instead.
 
 ## [1.0.1] - 2017-03-17
 ### Changed
