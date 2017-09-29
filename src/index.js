@@ -123,16 +123,16 @@ const checkForMissingFunctions = (object = {}, functionsToCheck) => {
   return missingFunctions;
 };
 
-
 // Make our helpers available
 export { trackEventWhenReady, trackPageWhenReady, identifyWhenReady };
 
-export default function ({
+// Main function to initialize analytics
+export const initAnalytics = ({
   analytics,
   integrations,
   options = {},
   autorun = true,
-} = {}) {
+} = {}) => {
   // Ensure we have been supplied at least the analytics & segment integration objects.
   if (typeof analytics !== 'object' || typeof integrations !== 'object') {
     throw new Error('Analytics is not logging! You must initialize analytics with the correct params.');
@@ -158,4 +158,4 @@ export default function ({
 
   // Set everything up...
   bootstrapAnalytics({ integrations, options, autorun });
-}
+};
