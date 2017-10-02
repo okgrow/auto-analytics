@@ -5,6 +5,7 @@ import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 import { render } from 'react-dom';
 import { Router, Route, browserHistory, Link } from 'react-router';
+import { Helmet } from "react-helmet";
 
 import { initAnalytics } from '@okgrow/auto-analytics';
 
@@ -50,6 +51,9 @@ export default class App extends Component {
   render() {
     return (
       <div>
+        <Helmet>
+          <title>Analytics Example - {this.props.route.path}</title>
+        </Helmet>
         <h3>Navigate to see automatic Page() tracking</h3>
         <Link to="/one"><p>One</p></Link>
         <Link to="/two"><p>Two</p></Link>
