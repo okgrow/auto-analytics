@@ -16,25 +16,25 @@ const identifyWhenReady = (...args) =>
 
 
 // This is where analytics gets called...
-const logPageLoad = (title, referrer) => {
+const logPageLoad = ({ referrer, delay }) => {
   // Use setTimeout so it uses the location from after the route change
+  // A 50ms delay is used to allow document.title to be updated before capturing the event.
   setTimeout(() => {
     const page = {
-      title,
+      title: document.title,
       referrer,
       path: window.location.pathname,
       search: window.location.search,
       url: window.location.href,
     };
-
     // Track page on analytics
     trackPageWhenReady(page.title, page);
-  }, 0);
+  }, delay || 0);
 };
 
 // A simple wrapper to be explicit about doing the first page load...
 const logFirstPageLoad = () => {
-  logPageLoad(document.title, document.referrer);
+  logPageLoad({ referrer: document.referrer });
 };
 
 
@@ -53,7 +53,7 @@ const configurePageLoadTracking = () => {
     // Make sure we catch any exception here so that we're sure to call the
     // originalPushState function (below)
     try {
-      logPageLoad(document.title, window.location.href);
+      logPageLoad({ referrer: window.location.href });
     } catch (e) {
       console.error(e); // eslint-disable-line no-console
     }
@@ -63,7 +63,11 @@ const configurePageLoadTracking = () => {
   };
 
   window.addEventListener('popstate', () => {
-    logPageLoad(document.title, window.location.href);
+    // BUG: When popstate occurs it is after the route change, which means
+    // window.location.href is the current route.
+    // NOTE: Delay is added here as document.title hasn't updated yet by packages
+    // like react-helmet or react-document-title, etc...
+    logPageLoad({ referrer: window.location.href, delay: 50 });
   }, false);
 };
 
