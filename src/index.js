@@ -34,6 +34,9 @@ const logPageLoad = ({ referrer, delay }) => {
 
 // A simple wrapper to be explicit about doing the first page load...
 const logFirstPageLoad = () => {
+  // Store the referrer incase a user uses their browsers back button.
+  // NOTE: We only wish to update the state, so we don't pass a 3rd param the URL.
+  window.history.replaceState({ referrer: document.referrer }, '');
   logPageLoad({ referrer: document.referrer });
 };
 
@@ -50,24 +53,28 @@ const configurePageLoadTracking = () => {
   // Wrap original pushState to call new push state function
   // NOTE: this can't be an arrow function!
   window.history.pushState = function okgrowAnalyticsMonkeyPatchedPushState(...args) {
-    // Make sure we catch any exception here so that we're sure to call the
-    // originalPushState function (below)
+    const referrer = window.location.href;
+
+    // Modify the params passed to pushState by adding referrer to history.state
+    // so we have the correct referrer when browser's back/fwd buttons are used
+    const newArgs = [{ ...args[0], referrer }, args[1], args[2]];
+
+    // Make sure we catch any exception here so that we're
+    // sure to call the originalPushState function (below)
     try {
-      logPageLoad({ referrer: window.location.href });
+      logPageLoad({ referrer });
     } catch (e) {
       console.error(e); // eslint-disable-line no-console
     }
 
     // Call original pushState with incoming arguments
-    return originalPushState.apply(window.history, args);
+    return originalPushState.apply(window.history, newArgs);
   };
 
   window.addEventListener('popstate', () => {
-    // BUG: When popstate occurs it is after the route change, which means
-    // window.location.href is the current route.
-    // NOTE: Delay is added here as document.title hasn't updated yet by packages
-    // like react-helmet or react-document-title, etc...
-    logPageLoad({ referrer: window.location.href, delay: 50 });
+    // NOTE: A delay is added as document.title wont be updated yet if packages
+    // like react-helmet or react-document-title, etc... are used.
+    logPageLoad({ referrer: window.history.state.referrer, delay: 50 });
   }, false);
 };
 
