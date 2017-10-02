@@ -12,36 +12,36 @@ window.analytics = analytics;
 let SETTINGS = false;
 
 // This is where analytics gets called...
-const logPageLoad = (title, referrer) => {
+const logPageLoad = ({ referrer, delay }) => {
   // Use setTimeout so it uses the location from after the route change
+  // A 50ms delay is used to allow document.title to be updated before capturing the event.
   setTimeout(() => {
     const page = {
-      title,
+      title: document.title,
       referrer,
-      path: location.pathname,
-      search: location.search,
-      url: location.href,
+      path: window.location.pathname,
+      search: window.location.search,
+      url: window.location.href,
     };
-
     // Track page on analytics
     trackPageWhenReady(page.title, page);
-  }, 0);
+  }, delay || 0);
 };
 
 // A simple wrapper to be explicit about doing the first page load...
 const logFirstPageLoad = () => {
-  logPageLoad(document.title, document.referrer);
+  // Store the referrer incase a user uses their browsers back button.
+  // NOTE: We only wish to update the state, so we don't pass a 3rd param the URL.
+  window.history.replaceState({ referrer: document.referrer }, '');
+  logPageLoad({ referrer: document.referrer });
 };
 
 
-//
 // What we're doing here is Monkey Patching(tm) the window.history.pushState()
 // function because, currently, the History API provides the 'popstate' event
 // but this event only gets fired when history.back(), history.go() are called
 // or the user uses the browser buttons, but NOT when history.pushState() is
 // called.
-//
-
 const configurePageLoadTracking = () => {
   // Save reference to original pushState.
   const originalPushState = window.history.pushState;
@@ -49,22 +49,31 @@ const configurePageLoadTracking = () => {
   // Wrap original pushState to call new push state function
   // NOTE: this can't be an arrow function!
   window.history.pushState = function okgrowAnalyticsMonkeyPatchedPushState(...args) {
-    // Make sure we catch any exception here so that we're sure to call the
-    // originalPushState function (below)
+    const referrer = window.location.href;
+
+    // Modify the params passed to pushState by adding referrer to history.state
+    // so we have the correct referrer when browser's back/fwd buttons are used
+    const newArgs = [{ ...args[0], referrer }, args[1], args[2]];
+
+    // Make sure we catch any exception here so that we're
+    // sure to call the originalPushState function (below)
     try {
-      logPageLoad(document.title, location.href);
+      logPageLoad({ referrer });
     } catch (e) {
       console.error(e); // eslint-disable-line no-console
     }
 
     // Call original pushState with incoming arguments
-    return originalPushState.apply(window.history, args);
+    return originalPushState.apply(window.history, newArgs);
   };
 
   window.addEventListener('popstate', () => {
-    logPageLoad(document.title, location.href);
+    // NOTE: A delay is added as document.title wont be updated yet if packages
+    // like react-helmet or react-document-title, etc... are used.
+    logPageLoad({ referrer: window.history.state.referrer, delay: 50 });
   }, false);
 };
+
 
 const analyticsStartup = () => {
   if (SETTINGS) {
