@@ -1,6 +1,6 @@
 {
   "name": "@okgrow/auto-analytics",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Complete automatic pageview tracking with Google Analytics, Mixpanel, KISSmetrics (and more) integration for JavaScript applications.",
   "repository": {
     "type": "git",
@@ -12,7 +12,14 @@
   },
   "bugs": "https://github.com/okgrow/auto-analytics/issues",
   "homepage": "https://github.com/okgrow/auto-analytics",
-  "keywords": ["javascript", "analytics", "google-analytics", "segment", "kissmetrics", "mixpanel"],
+  "keywords": [
+    "javascript",
+    "analytics",
+    "google-analytics",
+    "segment",
+    "kissmetrics",
+    "mixpanel"
+  ],
   "scripts": {
     "prepublish": ". ./scripts/prepublish.sh",
     "lint": "eslint ./src",
@@ -43,6 +50,5 @@
     "mock-browser": "^0.92.12",
     "nodemon": "1.11.x"
   },
-  "dependencies": {
-  }
+  "dependencies": {}
 }
