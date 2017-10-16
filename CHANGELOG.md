@@ -11,8 +11,23 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `initAnalytics()` now accepts a single object containing `analytics.js`, segment's `integrations` & `options`, and `autorun`. e.g - `OKGAnalytics({ analytics, integrations, options, autorun })`.
 - Example updated with only the `Google Analytics` and `Mixpanel` integrations bundled in `analytics.min.js`.
 - Rollup.js is now used for bundling the auto-analytics package instead of a custom babel script.
-- .babelrc now has a `build` & `test` config.
+- `.babelrc` now has a `build` & `test` config.
 - `.npmignore` has been removed and `files: ['dist']` has been added to `package.json` instead.
+
+## [1.0.4] - 2017-10-16
+### Changed
+- Update `analytics.min.js` to latest released version
+### Fixed
+- Don't include Fragment Identifier (e.g - `#foo` ) in our `document.referrer`. Fixes #14
+
+## [1.0.3] - 2017-10-02
+### Fixed
+- Referrer will now correctly reference the original referrer when browsers back/fwd buttons are used.
+- Title & Name will will not be from the previous route when packages like react-helmet, or react-document-title, etc... are used to set the `document.title`.
+
+## [1.0.2] - 2017-06-09
+### Removed
+- `babel-runtime` has been removed from build process.
 
 ## [1.0.1] - 2017-03-17
 ### Changed
