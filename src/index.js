@@ -53,7 +53,8 @@ const configurePageLoadTracking = () => {
   // Wrap original pushState to call new push state function
   // NOTE: this can't be an arrow function!
   window.history.pushState = function okgrowAnalyticsMonkeyPatchedPushState(...args) {
-    const referrer = window.location.href;
+    // NOTE: We do not use window.location.href as it may contain a fragment identifier.
+    const referrer = window.location.origin + window.location.pathname + window.location.search;
 
     // Modify the params passed to pushState by adding referrer to history.state
     // so we have the correct referrer when browser's back/fwd buttons are used
