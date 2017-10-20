@@ -69,9 +69,13 @@ const configurePageLoadTracking = () => {
   };
 
   window.addEventListener('popstate', () => {
+    // If the history is manipulated, by setting a hash for example,
+    // the state property may be absent when a popstate is triggered
+    const { referrer = '' } = window.history.state || {};
+    
     // NOTE: A delay is added as document.title wont be updated yet if packages
     // like react-helmet or react-document-title, etc... are used.
-    logPageLoad({ referrer: window.history.state.referrer, delay: 50 });
+    logPageLoad({ referrer: referrer || '', delay: 50 });
   }, false);
 };
 
