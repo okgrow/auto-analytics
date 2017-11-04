@@ -14,11 +14,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `.babelrc` now has a `build` & `test` config.
 - `.npmignore` has been removed and `files: ['dist']` has been added to `package.json` instead.
 
+## [1.0.5] - 2017-11-04
+### Fixed
+- Handle missing state when setting referrer. More details -> [#16](https://github.com/okgrow/auto-analytics/issues/16)
+
 ## [1.0.4] - 2017-10-16
 ### Changed
 - Update `analytics.min.js` to latest released version
 ### Fixed
-- Don't include Fragment Identifier (e.g - `#foo` ) in our `document.referrer`. Fixes #14
+- Don't include Fragment Identifier (e.g - `#foo` ) in our `document.referrer`. Fixes [#14](https://github.com/okgrow/auto-analytics/issues/14)
 
 ## [1.0.3] - 2017-10-02
 ### Fixed
