@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `.babelrc` now has a `build` & `test` config.
 - `.npmignore` has been removed and `files: ['dist']` has been added to `package.json` instead.
 
+## [1.0.6] - 2017-11-27
+### Fixed
+- Ensure that any existing state is copied across when we use `replaceState()` in `logFirstPageLoad()`. More details -> [PR #19](https://github.com/okgrow/auto-analytics/pull/19)
+
 ## [1.0.5] - 2017-11-04
 ### Fixed
 - Handle missing state when setting referrer. More details -> [#16](https://github.com/okgrow/auto-analytics/issues/16)
