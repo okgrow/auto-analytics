@@ -30,8 +30,8 @@ const logPageLoad = ({ referrer, delay }) => {
 
 // A simple wrapper to be explicit about doing the first page load...
 const logFirstPageLoad = () => {
-  // Ensure we copy over any existing state when we call replaceState
-  const currentState = window.history.state;
+  // Ensure we copy over existing state (when it's an object/array) when we use replaceState 
+  const currentState = typeof window.history.state === 'object' ? window.history.state : null;
   // Store the referrer incase a user uses their browsers back button.
   // NOTE: We only wish to update the state, so we don't pass a 3rd param the URL.
   window.history.replaceState({ ...currentState, referrer: document.referrer }, '');
