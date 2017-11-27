@@ -6,11 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Changed
-- Stop bundling `analytics.min.js` with our package.
+- No longer bundling vendor `analytics.min.js` with our package. You must now create your own `analytics.min.js` file. Please refer to README for more details.
 - Default function is no longer exported. Replaced with `initAnalytics()`.
-- `initAnalytics()` now accepts a single object containing `analytics.js`, segment's `integrations` & `options`, and `autorun`. e.g - `OKGAnalytics({ analytics, integrations, options, autorun })`.
+- `initAnalytics()` now expects a single object param which contains `analytics.js`, segment's `integrations` & `options`, and `autorun`. e.g - `initAnalytics({ analytics, integrations, options, autorun })`. Please refer to README for more details.
 - Example updated with only the `Google Analytics` and `Mixpanel` integrations bundled in `analytics.min.js`.
-- Rollup.js is now used for bundling the auto-analytics package instead of a custom babel script.
+- [Rollup.js](https://rollupjs.org/) is now used for bundling the auto-analytics package instead of a custom babel script.
 - `.babelrc` now has a `build` & `test` config.
 - `.npmignore` has been removed and `files: ['dist']` has been added to `package.json` instead.
 
