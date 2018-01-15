@@ -17,5 +17,8 @@ export default {
     // Display the bundled file sizes
     filesize(),
   ],
-  output: { file: pkg.main, format: 'umd', name: 'OKGAnalytics' },
+  output: [
+    { file: pkg.main, format: 'umd', name: 'OKGAnalytics' },
+    { file: pkg.module, format: 'es', name: 'OKGAnalytics' },
+  ]
 };
