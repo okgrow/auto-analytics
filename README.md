@@ -11,12 +11,15 @@ Use one API, thanks to Segment.io's [analytics.js](https://segment.com/docs/libr
 ## Table of Contents
 
 - [Install](#install)
-- [Currently Supported Analytic Services](#currently-supported-analytic-services)
-- [Ad-blocker](#ad-blocker)
-- [Configuration](#configuration)
-	- [Page views](#page-views)
-	- [Event tracking](#event-tracking)
+- [Creating Segment's analytics.js](#creating-segments-analyticsjs)
+  - [Recommended Process](#recommended-process)
+  - [Not Recommended: Use Segment's example analytics.js Package](#not-recommended-use-segments-example-analyticsjs-package)
+- [Integrations Config](#integrations-config)
+- [Package Usage](#package-usage)
+  - [Page views](#page-views)
+  - [Event tracking](#event-tracking)
   - [Debugging](#debugging)
+  - [Ad-blocker](#ad-blocker)
   - [Example React Router Application](#example-react-router-application)
 - [Maintainers](#maintainers)
 - [Contributing](#contributing)
@@ -85,21 +88,13 @@ npm install --save analytics.js
 
 However it is recommend that you build your own `analytics.js` with only the integrations you need. You can see all possible `analytics.js-integrations` [here](https://github.com/segment-integrations?query=analytics.js-integration).
 
-## Settings Configuration
+## Integrations Config
 
 The service names and API key-names provided in the `integrations` section are specific to each platform. Make sure to use the correct service name and key shown for the platform you're adding.
 
 There are other options which are not documented in the example above. To find them search for your specific integration [in this file](https://github.com/okgrow/analytics.js/blob/master/analytics.js) and look at the options and their defaults that are set with `.option(...)`.
 
-## Ad-blocker
-
-If you, or your users, are running an ad blocker in their browser and the analytics package is not bundled into a single JavaScript file to the browser (i.e., downloads as `analytics.js` or something similar) the browser's ad blocker may prevent analytics tracking. This can happen during development mode when all JavaScript files are typically not bundled together.
-
-To solve this problem with a Meteor application, for example, you can run the application in production mode like this:
-
-`meteor run --production --settings settings.json`
-
-**NOTE:** If an Ad-blocker is enabled the expected behaviour is that your analytic events will not be received. You will see an error message in your console reporting the events being blocked.
+## Package Usage
 
 ### Page views
 
@@ -137,6 +132,16 @@ To turn on debugging, in the console:
 Turn debugging off, in the console:
 
 `> analytics.debug(false)`
+
+### Ad-blocker
+
+If you, or your users, are running an ad blocker in their browser and the analytics package is not bundled into a single JavaScript file to the browser (i.e., downloads as `analytics.js` or something similar) the browser's ad blocker may prevent analytics tracking. This can happen during development mode when all JavaScript files are typically not bundled together.
+
+To solve this problem with a Meteor application, for example, you can run the application in production mode like this:
+
+`meteor run --production --settings settings.json`
+
+**NOTE:** If an Ad-blocker is enabled the expected behaviour is that your analytic events will not be received. You will see an error message in your console reporting the events being blocked.
 
 ### Example React Router Application
 
