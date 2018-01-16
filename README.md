@@ -1,8 +1,17 @@
-# Auto Analytics
+<h1 align="center">Auto Analytics</h1>
+<div align="center">
+  <a href="https://badge.fury.io/js/%40okgrow%2Fauto-analytics">
+    <img src="https://badge.fury.io/js/%40okgrow%2Fauto-analytics.svg" alt="NPM version" />
+  </a>
+  <a href="https://github.com/okgrow/auto-analytics/issues">
+    <img src="https://img.shields.io/github/issues/okgrow/auto-analytics.svg" alt="GitHub issues" />
+  </a>
+  <a href="https://github.com/okgrow/auto-analytics/blob/master/LICENSE">
+    <img src="https://img.shields.io/github/license/okgrow/auto-analytics.svg" alt="GitHub license" />
+  </a>
+</div>
 
-[![npm version](https://badge.fury.io/js/%40okgrow%2Fauto-analytics.svg)](https://badge.fury.io/js/%40okgrow%2Fauto-analytics)
-
-> Complete Google Analytics, Mixpanel, KISSmetrics (and more) integration for JavaScript applications.
+> Automated page tracking (+ more!) with any Analytics service of your choice! :fire:
 
 Use one API, thanks to Segment.io's [analytics.js](https://segment.com/docs/libraries/analytics.js/), to **easily and automatically** record and send data from your JavaScript application to your analytics platforms.
 
@@ -10,7 +19,7 @@ Use one API, thanks to Segment.io's [analytics.js](https://segment.com/docs/libr
 
 ## Table of Contents
 
-- [Install](#install)
+- [Quick Start](#quick-start)
 - [Creating Segment's analytics.js](#creating-segments-analyticsjs)
   - [Recommended Process](#recommended-process)
   - [Not Recommended: Use Segment's example analytics.js Package](#not-recommended-use-segments-example-analyticsjs-package)
