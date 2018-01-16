@@ -20,5 +20,5 @@ export default {
   output: [
     { file: pkg.main, format: 'umd', name: 'OKGAnalytics' },
     { file: pkg.module, format: 'es', name: 'OKGAnalytics' },
-  ]
+  ],
 };
