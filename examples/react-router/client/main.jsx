@@ -5,7 +5,7 @@ import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 import { render } from 'react-dom';
 import { Router, Route, browserHistory, Link } from 'react-router';
-import { Helmet } from "react-helmet";
+import { Helmet } from 'react-helmet';
 
 import { initAnalytics } from '@okgrow/auto-analytics';
 

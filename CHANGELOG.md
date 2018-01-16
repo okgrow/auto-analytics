@@ -5,9 +5,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [2.0.0] - 2018-01-16
 ### Changed
-- No longer bundling vendor `analytics.min.js` with our package. You must now create your own `analytics.min.js` file. Please refer to README for more details.
-- Default function is no longer exported. Replaced with `initAnalytics()`.
+- **BREAKING:** No longer bundling vendor `analytics.min.js` with our package. You must now create your own `analytics.min.js` file. Please refer to [README](https://github.com/okgrow/auto-analytics#creating-segments-analyticsjs) for instructions on how to build your own analytics integration bundle.
+- **BREAKING:** Default function is no longer exported. Replaced with `initAnalytics()`. You must import as follows: `import { initAnalytics } from '@okgrow/auto-analytics'`.
 - `initAnalytics()` now expects a single object param which contains `analytics.js`, segment's `integrations` & `options`, and `autorun`. e.g - `initAnalytics({ analytics, integrations, options, autorun })`. Please refer to README for more details.
 - Example updated with only the `Google Analytics` and `Mixpanel` integrations bundled in `analytics.min.js`.
 - [Rollup.js](https://rollupjs.org/) is now used for bundling the auto-analytics package instead of a custom babel script.
