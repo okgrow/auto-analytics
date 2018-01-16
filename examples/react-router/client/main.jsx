@@ -5,18 +5,28 @@ import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 import { render } from 'react-dom';
 import { Router, Route, browserHistory, Link } from 'react-router';
+import { Helmet } from 'react-helmet';
 
-import OKGAnalytics, { analytics } from '@okgrow/auto-analytics';
+import { initAnalytics } from '@okgrow/auto-analytics';
 
 import './main.html';
+// NOTE: import your own custom built segment analytics.js like below.
+// You can find out how to build your analytics.js here https://github.com/okgrow/analytics.js
+// In this example our analytics.js is bundled with only Google Analytics & Mixpanel
+import analytics from '../imports/analytics.min';
 
-const SETTINGS = (Meteor.settings
+const integrations = (Meteor.settings
                   && Meteor.settings.public
                   && Meteor.settings.public.analyticsSettings)
                   || false;
 
-// Initialize the @okgrow/auto-analytics package
-OKGAnalytics(SETTINGS);
+// NOTE: Initialize the @okgrow/auto-analytics package.
+initAnalytics({ analytics, integrations, options: {}, autorun: true });
+
+const exampleTrackEvent = () => analytics.track('Bought a Ticket', {
+  eventName: 'Wine Tasting',
+  couponValue: 50,
+});
 
 export default class App extends Component {
   constructor() {
@@ -41,13 +51,19 @@ export default class App extends Component {
   render() {
     return (
       <div>
-        <Link to="/one">One</Link>
-        <Link to="/two">Two</Link>
-        <Link to="/three">Three</Link>
+        <Helmet>
+          <title>Analytics Example - {this.props.route.path}</title>
+        </Helmet>
+        <h3>Navigate to see automatic Page() tracking</h3>
+        <Link to="/one"><p>One</p></Link>
+        <Link to="/two"><p>Two</p></Link>
+        <Link to="/three"><p>Three</p></Link>
+
         <div>
           <h3>Current route</h3>
           {this.props.route.path}
         </div>
+
         <div>
           <h3>Latest Analytics Logged</h3>
           <ul>
@@ -58,6 +74,10 @@ export default class App extends Component {
             }
           </ul>
         </div>
+
+        <h3>Click Button to see custom Track() event example</h3>
+        <button onClick={exampleTrackEvent}>Buy a ticket</button>
+
         <p>Want to see more detail? Call <code style={{ backgroundColor: 'blueviolet', padding: 4, color: 'white' }}>analytics.debug()</code> in the browser console and refresh.</p>
       </div>
     );

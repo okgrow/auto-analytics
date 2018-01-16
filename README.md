@@ -22,66 +22,84 @@ Use one API, thanks to Segment.io's [analytics.js](https://segment.com/docs/libr
 - [Contributing](#contributing)
 - [License](#license)
 
-## Install
+## Background
+
+### Auto Analytics 2.0+
+With version 2.X we are **removing the embedded Segment `analytics.js` module**. With version 2.0.0 and beyond you will need to build your own Segment `analytics.js` module _**manually**_.
+
+**NOTE:** _We have **not** added the package Segment `analytics.js` as an explicit dependency_ because some developers will prefer to add only individual integrations or create a customized `analytics.js` module in order to keep the weight of the package to a minimum.
+
+### Auto Analytics 1.0+
+With the first version of this package we basically extracted code from our more Meteor-specific Atmosphere package to create a more generally usable package for the whole JavaScript community.
+
+
+## Quick Start
 
 ```sh
-npm install @okgrow/auto-analytics --save
+npm install --save @okgrow/auto-analytics
 ```
 
-## Currently Supported Analytic Services
+```js
+import { initAnalytics } from '@okgrow/auto-analytics';
+// NOTE: You must build your own analytics.js, see Creating Segment's analytics.js for details.
+import analytics from './your-custom-build/analytics.min.js';
 
-* Amplitude
-* Chartbeat
-* comScore
-* Google Analytics
-* HubSpot
-* Intercom
-* Keen IO
-* KISSmetrics
-* Mixpanel
-* Quantcast
-* Segment.io
+// Add your analytics integrations and their tracking ids + config options here.
+const settings = {
+  analytics,
+  integrations: {
+    'Google Analytics': { 'trackingId': 'Your tracking ID' },
+    'Mixpanel': { 'token': '...', 'people': true },
+  },
+  options: {
+    // Segment options to be passed to initialize() from analytics.js-core
+  },
+  autorun: true, // Defaults to true if not provided.
+};
+
+initAnalytics(settings);
+```
+
+## Creating Segment's analytics.js
+
+### Recommended process
+
+1. Clone this example repo down `git clone https://github.com/okgrow/analytics.js.git`
+1. `cd analytics.js`
+1. `npm install && npm run build`
+1. The build will output these two files: `analytics.js` and `analytics.min.js`
+
+Too reduce the final bundle size, remove any integrations that you are not using. To do that:
+
+1. Open up the `lib/integrations.js` file and remove all the integrations that you will not use.
+1. Now re-run `npm run build`
+1. Your `analytics.js` and `analytics.min.js` will only contain the integrations you are using.
+1. Copy the `analytics.min.js` file to your project so that `@okgrow/auto-analytics` can use it.
+
+### Not Recommended: Use Segment's example `analytics.js` Package
+Segment's `analytics.js` package offers a large number of integrations with various analytics providers. Installing their example package will give you all of their supported integrations(very large bundle size):
+
+```sh
+npm install --save analytics.js
+```
+
+However it is recommend that you build your own `analytics.js` with only the integrations you need. You can see all possible `analytics.js-integrations` [here](https://github.com/segment-integrations?query=analytics.js-integration).
+
+## Settings Configuration
+
+The service names and API key-names provided in the `integrations` section are specific to each platform. Make sure to use the correct service name and key shown for the platform you're adding.
+
+There are other options which are not documented in the example above. To find them search for your specific integration [in this file](https://github.com/okgrow/analytics.js/blob/master/analytics.js) and look at the options and their defaults that are set with `.option(...)`.
 
 ## Ad-blocker
 
-If you, or your users, are running an ad blocker in their browser and the analytics package is not bundled into a single JavaScript file to the browser (i.e., is downloads as analytics.js or something similar) the browser's ad blocker may prevent analytics tracking. This can happen during development mode when all JavaScript files are typically not bundled together.
+If you, or your users, are running an ad blocker in their browser and the analytics package is not bundled into a single JavaScript file to the browser (i.e., downloads as `analytics.js` or something similar) the browser's ad blocker may prevent analytics tracking. This can happen during development mode when all JavaScript files are typically not bundled together.
 
 To solve this problem with a Meteor application, for example, you can run the application in production mode like this:
 
 `meteor run --production --settings settings.json`
 
-**NOTE:** If an Adblocker is enabled the expected behavior is that your analytic events will not be received. You will see an error message in your console reporting the events being blocked.
-
-## Configuration
-
-Add various platforms by adding each tool's configuration to the settings object passed to OKGAnalytics:
-
-```js
-import OKGAnalytics, { analytics } from '@okgrow/auto-analytics';
-
-const settings = {
-  // Add your analytics tracking ids here (remove this line before running)
-  "Google Analytics" : {"trackingId": "Your tracking ID"},
-  "Amplitude"        : {"apiKey": "..."},
-  "Chartbeat"        : {"uid": "..."},
-  "comScore"         : {"c2": "..."},
-  "HubSpot"          : {"portalId": "..."},
-  "Intercom"         : {"appId": "..."},
-  "Keen IO"          : {"projectId": "...", "writeKey": "..."},
-  "KISSmetrics"      : {"apiKey": "..."},
-  "Mixpanel"         : {"token":  "...", "people": true},
-  "Quantcast"        : {"pCode": "..."},
-  "Segment.io"       : {"apiKey": "..."}
-};
-
-OKGAnalytics(settings);
-```
-
-The service names and API key-names provided above are specific to each platform. Make sure to use the correct service name and key shown for the platform you're adding.
-
-There are other options which not documented here. To find them search for your specific integration [in this file](https://github.com/okgrow/analytics.js/blob/master/analytics.js) and look at the options and their defaults that are set with `.option(...)`.
-
-If you use a different service for tracking events or page views and you think it's popular enough that we should add it then please open an issue on the repo and we'll see how many supporters we get. Each additional integration adds a small amount to the file size so we want to support only the most common ones to economize the download size of this package.
+**NOTE:** If an Ad-blocker is enabled the expected behaviour is that your analytic events will not be received. You will see an error message in your console reporting the events being blocked.
 
 ### Page views
 
@@ -122,7 +140,7 @@ Turn debugging off, in the console:
 
 ### Example React Router Application
 
-This package includes an `examples` directory containing a simple (Meteor) application using react-router. This is just an example with a common router and doesn't imply this plugin only works with this router or only with Meteor. This application can be run from its directory with:
+This package includes an `examples` directory containing a simple (Meteor) application using react-router with a `analytics.min.js` containing only the `Google Analytics` and `Mixpanel` integrations. This is just an example with a common router and doesn't imply this plugin only works with this router or only with Meteor. This application can be run from its directory with:
 
 `meteor --settings settings.json --production`.
 

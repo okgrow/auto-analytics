@@ -1,15 +1,19 @@
-/* globals window, location, document */
+/* globals window, document */
 
-import { trackEventWhenReady, trackPageWhenReady, identifyWhenReady } from './helpers';
+// analytics.js may not have loaded it's integrations by the time we start
+// tracking events, page views and identifies. So we can use these *WhenReady()
+// functions to defer the action until all the intgrations are ready.
+// TODO: Consider whether to export something like this, maybe provide our own
+//       API instead of just using analytics.js API.
+const trackEventWhenReady = (...args) =>
+  window.analytics.ready(() => window.analytics.track.apply(this, args));
 
-import analytics from '../vendor/analytics.min';
+const trackPageWhenReady = (...args) =>
+  window.analytics.ready(() => window.analytics.page.apply(this, args));
 
-// Make anayltics available globally in the console
-window.analytics = analytics;
+const identifyWhenReady = (...args) =>
+  window.analytics.ready(() => window.analytics.identify.apply(this, args));
 
-// Doing this because some weird things happen when we just pass settings as an
-// argument to the functions below.
-let SETTINGS = false;
 
 // This is where analytics gets called...
 const logPageLoad = ({ referrer, delay }) => {
@@ -30,7 +34,7 @@ const logPageLoad = ({ referrer, delay }) => {
 
 // A simple wrapper to be explicit about doing the first page load...
 const logFirstPageLoad = () => {
-  // Ensure we copy over existing state (when it's an object/array) when we use replaceState 
+  // Ensure we copy over existing state (when it's an object/array) when we use replaceState
   const currentState = typeof window.history.state === 'object' ? window.history.state : null;
   // Store the referrer incase a user uses their browsers back button.
   // NOTE: We only wish to update the state, so we don't pass a 3rd param the URL.
@@ -81,24 +85,25 @@ const configurePageLoadTracking = () => {
   }, false);
 };
 
+const isEmptyObject = item =>
+  typeof item === 'object' && !Object.keys(item).length;
 
-const analyticsStartup = () => {
-  if (SETTINGS) {
-    // Pass a new object based on settings in case analytics wants or tries to
-    // modify the settings object being passed.
-    analytics.initialize(Object.assign({}, SETTINGS));
+const analyticsStartup = ({ integrations, options = {}, autorun = true }) => {
+  if (!isEmptyObject(integrations)) {
+    // You can review the function's signature & behaviour with the below link.
+    // https://github.com/segmentio/analytics.js-core/blob/master/lib/analytics.js#L93-L105
+    window.analytics.initialize(integrations, options);
 
-    if (SETTINGS.autorun !== false) {
+    if (autorun !== false) {
       logFirstPageLoad();
       configurePageLoadTracking();
     }
   } else {
-    console.error('Missing analyticsSettings in Meteor.settings.public'); // eslint-disable-line no-console
+    console.error('analyticsStartup has failed! Your analytic integrations are missing!'); // eslint-disable-line no-console
   }
 };
 
 
-//
 // What we're doing here is hooking into the window.onload event to:
 //
 // a) log the first page load, and
@@ -112,31 +117,63 @@ const analyticsStartup = () => {
 //
 // Possible solution is that we make analyticsStartup() (above) a public API
 // a developer can call to manually set this all up.
-//
-
-const bootstrapAnalytics = () => {
+const bootstrapAnalytics = (settings) => {
   const originalWindowOnLoad = window.onload;
 
   if (typeof originalWindowOnLoad === 'function') {
     window.onload = function okgrowAnalyticsMonkeyPatchedOnLoad(...args) {
-      analyticsStartup(SETTINGS);
+      analyticsStartup(settings);
       originalWindowOnLoad.apply(this, args);
     };
   } else {
-    window.onload = analyticsStartup;
+    window.onload = () => analyticsStartup(settings);
   }
 };
 
-// Make analytics available as an export
-export { analytics }; // eslint-disable-line import/prefer-default-export
+// returns a string containing any missing functions.
+const checkForMissingFunctions = (object = {}, functionsToCheck) => {
+  const missingFunctions = functionsToCheck.reduce((accum, funcToCheck) => {
+    if (typeof object[funcToCheck] !== 'function') {
+      return `${accum}${funcToCheck} ,`;
+    }
+    return accum;
+  }, '');
+  return missingFunctions;
+};
 
 // Make our helpers available
 export { trackEventWhenReady, trackPageWhenReady, identifyWhenReady };
 
-export default function (settings) {
-  // Doing this because some weird things happen when we just pass this to
-  // the functions above.
-  SETTINGS = settings;
+// Main function to initialize analytics
+export const initAnalytics = ({
+  analytics,
+  integrations,
+  options = {},
+  autorun = true,
+} = {}) => {
+  // Ensure we have been supplied at least the analytics & segment integration objects.
+  if (typeof analytics !== 'object' || typeof integrations !== 'object') {
+    throw new Error('Analytics is not logging! You must initialize analytics with the correct params.');
+  }
+
+  // Ensure we are not missing the core functions we depend on.
+  const expectedAnalyticsFuncs = ['ready', 'track', 'page', 'identify'];
+  const missingAnalyticsFuncs = checkForMissingFunctions(analytics, expectedAnalyticsFuncs);
+  if (missingAnalyticsFuncs.length) {
+    throw new Error(`Analytics is not logging! Expected analytics to contain ${missingAnalyticsFuncs} function(s).`);
+  }
+
+  // Alert the user to any Integrations they have setup in their settings,
+  // but are missing from the analytics.min.js bundle they have passed to us.
+  const missingIntegrations = checkForMissingFunctions(analytics.Integrations, Object.keys(integrations));
+  if (missingIntegrations.length) {
+    console.warn(`Your analytics is missing the integrations you specified in your settings@ Expected analytics to contain ${missingIntegrations} integration(s).`);
+    console.warn('The missing integration(s) will not work without being included in your analytics.js.');
+  }
+
+  // Make analytics available globally in the console
+  window.analytics = analytics;
+
   // Set everything up...
-  bootstrapAnalytics();
-}
+  bootstrapAnalytics({ integrations, options, autorun });
+};

@@ -1,63 +1,90 @@
-import chai from 'chai';               // DOCUMENTATION: http://chaijs.com/
-import { mocks } from 'mock-browser';  // DOCUMENTATION: https://www.npmjs.com/package/mock-browser
+/* globals jest describe test expect */
 
-const { describe, it } = global;
+import analytics from '../../examples/react-router/imports/analytics.min';
+import { initAnalytics, trackPageWhenReady, trackEventWhenReady, identifyWhenReady } from '../index';
 
-// Let's setup the global browser objects our, and the underlying analytics.js, package requires...
-const mock = new mocks.MockBrowser();
-
-global.window = mock.getWindow();
-global.document = mock.getDocument();
-global.location = mock.getLocation();
-global.navigator = mock.getNavigator();
-global.history = mock.getHistory();
-
-// Now that's all setup, pull in the package...
-const OKGAnalytics = require('../index');
-
-const should = chai.should();
+// Params to pass to initialize initAnalytics
+const validSettings = { // eslint-disable-line
+  analytics,
+  integrations: {
+    'Google Analytics': { 'trackingId': 'UA-58359748-3' }, // eslint-disable-line quote-props
+    'Mixpanel': { 'token': 'b513b13a2e253576934b47d2a195ae29', 'people': true }, // eslint-disable-line quote-props
+  },
+  options: {
+    // Segment options for initialize() from analytics.js-core
+  },
+  autorun: true,
+};
 
 // Some very basic "smoke test" stuff...
-describe('okgrow-auto-analytics imports', () => {
-  it('analytics is an object', async () => {
-    OKGAnalytics.analytics.should.be.a('object');
+describe('@okgrow/auto-analytics correctly exposes', () => {
+  test('trackEventWhenReady is a function', () => {
+    expect(trackEventWhenReady).toBeDefined();
+    expect(typeof trackEventWhenReady).toBe('function');
   });
-  it('trackEventWhenReady is a function', async () => {
-    OKGAnalytics.trackEventWhenReady.should.be.a('function');
+  test('trackPageWhenReady is a function', () => {
+    expect(trackPageWhenReady).toBeDefined();
+    expect(typeof trackPageWhenReady).toBe('function');
   });
-  it('trackPageWhenReady is a function', async () => {
-    OKGAnalytics.trackPageWhenReady.should.be.a('function');
-  });
-  it('identifyWhenReady is a function', async () => {
-    OKGAnalytics.identifyWhenReady.should.be.a('function');
-  });
-  it('default is a function', async () => {
-    OKGAnalytics.default.should.be.a('function');
+  test('identifyWhenReady is a function', () => {
+    expect(identifyWhenReady).toBeDefined();
+    expect(typeof identifyWhenReady).toBe('function');
   });
 
-  it('analytics is an object on window', async () => {
-    // eslint-disable-next-line no-undef
-    window.analytics.should.be.a('object');
+  test('initAnalytics is a function', () => {
+    expect(initAnalytics).toBeDefined();
+    expect(typeof initAnalytics).toBe('function');
+  });
+});
+
+// Testing our error reporting on startup
+describe('initAnalytics() Throws Errors on corrupt params', () => {
+  // Mock functions that are expected to exist on the analytics object.
+  const page = jest.fn();
+  const ready = jest.fn();
+  const track = jest.fn();
+  const identify = jest.fn();
+
+  // NOTE: Only unhandled edge case is if a user is to pass null.
+  // As a TypeError will be thrown due to destructuring.
+  test('Throws error when no params passed', () => {
+    const init = () => initAnalytics();
+    expect(init).toThrowError('Analytics is not logging! You must initialize analytics with the correct params.');
   });
 
-  it('window.history.pushState is function', async () => {
-    // eslint-disable-next-line no-undef
-    window.history.pushState.should.be.a('function');
+  test('Throws when analytics is missing', () => {
+    const init = () => initAnalytics({});
+    expect(init).toThrowError('Analytics is not logging! You must initialize analytics with the correct params.');
   });
 
-  it('window.onload is function', async () => {
-    const settings = {
-      'Google Analytics': { 'trackingId': 'UA-58359748-3' }, // eslint-disable-line quote-props
-      'Mixpanel': { 'token': 'b513b13a2e253576934b47d2a195ae29', 'people': true }, // eslint-disable-line quote-props
-    };
+  test('Throws when integrations is missing', () => {
+    const init = () => initAnalytics({ analytics });
+    expect(init).toThrowError('Analytics is not logging! You must initialize analytics with the correct params.');
+  });
 
-    // eslint-disable-next-line no-undef
-    should.not.exist(window.onload);
+  test('Throws when analytics is missing all core functions', () => {
+    const missingAll = () => initAnalytics({ analytics: {}, integrations: {} });
+    expect(missingAll).toThrowError('Analytics is not logging! Expected analytics to contain ready ,track ,page ,identify , function(s).');
+  });
 
-    OKGAnalytics.default(settings);
+  test('Throws when analytics is missing ready()', () => {
+    const missingReady = () => initAnalytics({ analytics: { track, page, identify }, integrations: {} });
+    expect(missingReady).toThrowError('Analytics is not logging! Expected analytics to contain ready , function(s).');
+  });
 
-    // eslint-disable-next-line no-undef
-    window.onload.should.be.a('function');
+  test('Throws when analytics is missing track()', () => {
+    const missingTrack = () => initAnalytics({ analytics: { ready, page, identify }, integrations: {} });
+    expect(missingTrack).toThrowError('Analytics is not logging! Expected analytics to contain track , function(s).');
+  });
+
+  test('Throws when analytics is missing page()', () => {
+    const missingPage = () => initAnalytics({ analytics: { ready, track, identify }, integrations: {} });
+    expect(missingPage).toThrowError('Analytics is not logging! Expected analytics to contain page , function(s).');
+  });
+
+  test('Throws when analytics is missing identify()', () => {
+    const missingIdentify = () => initAnalytics({ analytics: { ready, track, page }, integrations: {} });
+    expect(missingIdentify).toThrowError('Analytics is not logging! Expected analytics to contain identify , function(s).');
   });
 });
 
