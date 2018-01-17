@@ -10,8 +10,9 @@
     <img src="https://img.shields.io/github/license/okgrow/auto-analytics.svg" alt="GitHub license" />
   </a>
 </div>
-
-> Automated page tracking (+ more!) with any Analytics service of your choice! :fire:
+<p align="center">
+Automated page tracking (+ more!) with any Analytics service of your choice! :fire:
+</p>
 
 Use one API, thanks to Segment.io's [analytics.js](https://segment.com/docs/libraries/analytics.js/), to **easily and automatically** record and send data from your JavaScript application to your analytics platforms.
 
@@ -73,6 +74,8 @@ initAnalytics(settings);
 ```
 
 ## Creating Segment's analytics.js
+
+If you wish to keep using the same analytics.min.js bundle (file size: 244kb) from v1.0.6  you can find it [here](https://github.com/okgrow/analytics.js/blob/auto-analytics-v1.0.4/analytics.min.js). To reduce bundle size or to add Analytic integrations previously not supported then follow the below process.
 
 ### Recommended process
 
