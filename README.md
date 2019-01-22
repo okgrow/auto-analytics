@@ -17,6 +17,7 @@ Automated page tracking (+ more!) with any Analytics service of your choice! :fi
 Use one API, thanks to Segment.io's [analytics.js](https://segment.com/docs/libraries/analytics.js/), to **easily and automatically** record and send data from your JavaScript application to your analytics platforms.
 
 **NOTE:** The `@okgrow/auto-analytics` package replaces the **now deprecated** `okgrow-auto-analytics` package.
+**NOTE:** This pkg is **no longer being actively maintained**, if you'd like to maintain this pkg please express interest by opening an issue.
 
 ## Table of Contents
 
